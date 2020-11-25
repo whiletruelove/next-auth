@@ -29,6 +29,8 @@
    </p>
 </p>
 
+> WhileTrue.love: Fork to apply wechat-oAuth2 flow
+
 ## Overview
 
 NextAuth.js is a complete open source authentication solution for [Next.js](http://nextjs.org/) applications.

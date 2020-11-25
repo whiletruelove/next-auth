@@ -1,4 +1,5 @@
 import { decode as jwtDecode } from 'jsonwebtoken'
+import { URL } from 'url'
 import oAuthClient from './client'
 import logger from '../../../lib/logger'
 import { OAuthCallbackError } from '../../../lib/errors'
@@ -47,6 +48,14 @@ export default async function oAuthCallback (req) {
         // Support services that use OpenID ID Tokens to encode profile data
         profileData = jwtDecode(tokens.id_token, { json: true })
       } else {
+        // whiletrue.love: customize for wechat:oAuth2
+        if (provider.id === 'wechat') {
+          const urlObj = new URL(provider.profileUrl)
+          urlObj.searchParams.append('access_token', accessToken)
+          urlObj.searchParams.append('openid', results.openid)
+          provider.profileUrl = urlObj.href
+        }
+        // whiletrue.love.
         profileData = await client.get(provider, tokens.accessToken, tokens)
       }
 

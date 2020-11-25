@@ -1,9 +1,12 @@
 {
-  "name": "next-auth",
-  "version": "0.0.0-semantically-released",
+  "name": "@whiletruelove/next-auth",
+  "version": "3.11.3-canary.1",
   "description": "Authentication for Next.js",
   "homepage": "https://next-auth.js.org",
-  "repository": "https://github.com/nextauthjs/next-auth.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whiletruelove/next-auth.git"
+  },
   "author": "Iain Collins <me@iaincollins.com>",
   "main": "index.js",
   "scripts": {
@@ -38,7 +41,13 @@
     "providers.js",
     "adapters.js",
     "client.js",
-    "jwt.js"
+    "jwt.js",
+    "index.d.ts",
+    "client.d.ts",
+    "adapters.d.ts",
+    "_utils.d.ts",
+    "providers.d.ts",
+    "jwt.d.ts"
   ],
   "license": "ISC",
   "dependencies": {
@@ -87,6 +96,7 @@
     "mssql": "^6.2.1",
     "mysql": "^2.18.1",
     "next": "^10.0.5",
+    "object-assign": "^4.1.1",
     "pg": "^8.2.1",
     "postcss-cli": "^7.1.1",
     "postcss-nested": "^4.2.1",
@@ -111,10 +121,10 @@
       "fetch"
     ]
   },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/balazsorban44"
-    }
-  ]
+  "bugs": {
+    "url": "https://github.com/whiletruelove/next-auth/issues"
+  },
+  "directories": {
+    "test": "test"
+  }
 }
