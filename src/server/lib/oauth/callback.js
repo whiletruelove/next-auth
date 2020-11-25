@@ -3,6 +3,7 @@ import { createHash } from 'crypto'
 import querystring from 'querystring'
 import jwtDecode from 'jwt-decode'
 import oAuthClient from './client'
+import { URL } from 'url'
 import logger from '../../../lib/logger'
 
 // @TODO Refactor monkey patching in _getOAuthAccessToken() and _get()
@@ -89,6 +90,15 @@ export default async (req, provider, csrfToken, callback) => {
         } else {
           // Use custom get() method for oAuth2 flows
           client.get = _get
+
+          // whiletrue.love: customize for wechat:oAuth2
+          if (provider.id === 'wechat') {
+            const urlObj = new URL(provider.profileUrl);
+            urlObj.searchParams.append('access_token', accessToken);
+            urlObj.searchParams.append('openid', results.openid);
+            provider.profileUrl = urlObj.href;
+          }
+          // whiletrue.love.
 
           client.get(
             provider,

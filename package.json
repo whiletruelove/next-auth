@@ -1,9 +1,12 @@
 {
-  "name": "next-auth",
-  "version": "3.1.0",
+  "name": "@whiletruelove/next-auth",
+  "version": "3.1.1-beta.1",
   "description": "Authentication for Next.js",
   "homepage": "https://next-auth.js.org",
-  "repository": "https://github.com/nextauthjs/next-auth.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whiletruelove/next-auth.git"
+  },
   "author": "Iain Collins <me@iaincollins.com>",
   "main": "index.js",
   "scripts": {
@@ -37,7 +40,13 @@
     "providers.js",
     "adapters.js",
     "client.js",
-    "jwt.js"
+    "jwt.js",
+    "index.d.ts",
+    "client.d.ts",
+    "adapters.d.ts",
+    "_utils.d.ts",
+    "providers.d.ts",
+    "jwt.d.ts"
   ],
   "license": "ISC",
   "dependencies": {
@@ -69,6 +78,7 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "@types/react": "^16.9.56",
     "autoprefixer": "^9.7.6",
     "babel-preset-preact": "^2.0.0",
     "cssnano": "^4.1.10",
@@ -77,17 +87,27 @@
     "mongodb": "^3.5.9",
     "mssql": "^6.2.1",
     "mysql": "^2.18.1",
+    "object-assign": "^4.1.1",
     "pg": "^8.2.1",
     "postcss-cli": "^7.1.1",
     "postcss-nested": "^4.2.1",
     "puppeteer": "^5.2.1",
     "puppeteer-extra": "^3.1.15",
     "puppeteer-extra-plugin-stealth": "^2.6.1",
-    "standard": "^14.3.3"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "standard": "^14.3.3",
+    "typescript": "^4.1.2"
   },
   "standard": {
     "ignore": [
       "test/"
     ]
+  },
+  "bugs": {
+    "url": "https://github.com/whiletruelove/next-auth/issues"
+  },
+  "directories": {
+    "test": "test"
   }
 }

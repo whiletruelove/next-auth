@@ -3,6 +3,8 @@
 ![Build Test](https://github.com/nextauthjs/next-auth/workflows/Build%20Test/badge.svg)
 ![Integration Test](https://github.com/nextauthjs/next-auth/workflows/Integration%20Test/badge.svg)
 
+> WhileTrue.love: Fork to apply wechat-oAuth2 flow
+
 ## Overview
 
 NextAuth.js is a complete open source authentication solution for [Next.js](http://nextjs.org/) applications.
