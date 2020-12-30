@@ -7,6 +7,9 @@ import * as defaultEvents from './lib/default-events'
 import * as defaultCallbacks from './lib/default-callbacks'
 import parseProviders from './lib/providers'
 import callbackUrlHandler from './lib/callback-url-handler'
+import errorCallbackUrlHandler from './lib/errorback-url-handler'
+import localeHandler from './lib/locale-handler'
+import bizActionHandler from './lib/bizaction-handler'
 import extendRes from './lib/extend-req'
 import * as routes from './routes'
 import renderPage from './pages'
@@ -74,7 +77,7 @@ async function NextAuthHandler (req, res, userOptions) {
 
     if (provider &&
       provider.type === 'oauth' && provider.version?.startsWith('2') &&
-       (!provider.protection && provider.state !== false)
+      (!provider.protection && provider.state !== false)
     ) {
       provider.protection = 'state' // Default to state, as we did in 3.1 REVIEW: should we use "pkce" or "none" as default?
     }
@@ -134,10 +137,16 @@ async function NextAuthHandler (req, res, userOptions) {
       logger
     }
 
+    if (userOptions.defaultLocale) {
+      req.options.defaultLocale = userOptions.defaultLocale
+    }
+    bizActionHandler(req, res)
+    await localeHandler(req, res)
     await callbackUrlHandler(req, res)
+    await errorCallbackUrlHandler(req, res)
 
     const render = renderPage(req, res)
-    const { pages } = req.options
+    const { pages, errorCallbackUrl } = req.options
 
     if (req.method === 'GET') {
       switch (action) {
@@ -175,6 +184,10 @@ async function NextAuthHandler (req, res, userOptions) {
         case 'error':
           if (pages.error) {
             return res.redirect(`${pages.error}${pages.error.includes('?') ? '&' : '?'}error=${error}`)
+          }
+
+          if (errorCallbackUrl) {
+            return res.redirect(`${errorCallbackUrl}${errorCallbackUrl.includes('?') ? '&' : '?'}error=${error}`)
           }
 
           // These error messages are displayed in line on the sign in page

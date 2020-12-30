@@ -25,7 +25,9 @@ export default async function callback (req, res) {
     session: {
       jwt: useJwtSession,
       maxAge: sessionMaxAge
-    }
+    },
+    defaultLocale,
+    locale
   } = req.options
 
   // Get session ID (if set)
@@ -110,7 +112,11 @@ export default async function callback (req, res) {
         // e.g. option to send users to a new account landing page on initial login
         // Note that the callback URL is preserved, so the journey can still be resumed
         if (isNewUser && pages.newUser) {
-          return res.redirect(`${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`)
+          const _target = `${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`
+          if (locale && locale !== defaultLocale) {
+            return res.redirect(`/${locale}${_target}`)
+          }
+          return res.redirect(_target)
         }
 
         // Callback URL is already verified at this point, so safe to use if specified
@@ -206,7 +212,11 @@ export default async function callback (req, res) {
       // e.g. option to send users to a new account landing page on initial login
       // Note that the callback URL is preserved, so the journey can still be resumed
       if (isNewUser && pages.newUser) {
-        return res.redirect(`${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`)
+        const _target = `${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`
+        if (locale && locale !== defaultLocale) {
+          return res.redirect(`${locale}${_target}`)
+        }
+        return res.redirect(_target)
       }
 
       // Callback URL is already verified at this point, so safe to use if specified
