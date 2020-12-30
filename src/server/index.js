@@ -3,6 +3,8 @@ import jwt from '../lib/jwt'
 import parseUrl from '../lib/parse-url'
 import cookie from './lib/cookie'
 import callbackUrlHandler from './lib/callback-url-handler'
+import errorCallbackUrlHandler from './lib/errorback-url-handler'
+import localeHandler from './lib/locale-handler'
 import parseProviders from './lib/providers'
 import events from './lib/events'
 import callbacks from './lib/callbacks'
@@ -78,7 +80,7 @@ export default async (req, res, userSuppliedOptions) => {
     const cookies = {
       // default cookie options
       sessionToken: {
-        name: `${cookiePrefix}next-auth.session-token`,
+        name: `${cookiePrefix}auth.session-token`,
         options: {
           httpOnly: true,
           sameSite: 'lax',
@@ -87,7 +89,23 @@ export default async (req, res, userSuppliedOptions) => {
         }
       },
       callbackUrl: {
-        name: `${cookiePrefix}next-auth.callback-url`,
+        name: `${cookiePrefix}auth.callback-url`,
+        options: {
+          sameSite: 'lax',
+          path: '/',
+          secure: useSecureCookies
+        }
+      },
+      errorCallbackUrl: {
+        name: `${cookiePrefix}auth.error-callback-url`,
+        options: {
+          sameSite: 'lax',
+          path: '/',
+          secure: useSecureCookies
+        }
+      },
+      locale: {
+        name: `${cookiePrefix}auth.locale`,
         options: {
           sameSite: 'lax',
           path: '/',
@@ -97,7 +115,7 @@ export default async (req, res, userSuppliedOptions) => {
       csrfToken: {
         // Default to __Host- for CSRF token for additional protection if using useSecureCookies
         // NB: The `__Host-` prefix is stricter than the `__Secure-` prefix.
-        name: `${useSecureCookies ? '__Host-' : ''}next-auth.csrf-token`,
+        name: `${useSecureCookies ? '__Host-' : ''}auth.csrf-token`,
         options: {
           httpOnly: true,
           sameSite: 'lax',
@@ -221,7 +239,12 @@ export default async (req, res, userSuppliedOptions) => {
     if (options.debug === true) { process.env._NEXTAUTH_DEBUG = true }
 
     // Get / Set callback URL based on query param / cookie + validation
+    if (userSuppliedOptions.defaultLocale) {
+      options.defaultLocale = userSuppliedOptions.defaultLocale
+    }
+    options.locale = localeHandler(req, res, options)
     options.callbackUrl = await callbackUrlHandler(req, res, options)
+    options.errorCallbackUrl = await errorCallbackUrlHandler(req, res, options)
 
     if (req.method === 'GET') {
       switch (action) {
@@ -263,6 +286,7 @@ export default async (req, res, userSuppliedOptions) => {
           break
         case 'error':
           if (options.pages.error) { return redirect(`${options.pages.error}${options.pages.error.includes('?') ? '&' : '?'}error=${error}`) }
+          if (options.errorCallbackUrl) { return redirect(`${options.errorCallbackUrl}${options.errorCallbackUrl.includes('?') ? '&' : '?'}error=${error}`) }
 
           pages.render(req, res, 'error', { baseUrl, basePath, error }, done)
           break

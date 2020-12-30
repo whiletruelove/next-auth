@@ -93,10 +93,10 @@ export default async (req, provider, csrfToken, callback) => {
 
           // whiletrue.love: customize for wechat:oAuth2
           if (provider.id === 'wechat') {
-            const urlObj = new URL(provider.profileUrl);
-            urlObj.searchParams.append('access_token', accessToken);
-            urlObj.searchParams.append('openid', results.openid);
-            provider.profileUrl = urlObj.href;
+            const urlObj = new URL(provider.profileUrl)
+            urlObj.searchParams.append('access_token', accessToken)
+            urlObj.searchParams.append('openid', results.openid)
+            provider.profileUrl = urlObj.href
           }
           // whiletrue.love.
 

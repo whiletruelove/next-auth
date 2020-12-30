@@ -20,7 +20,9 @@ export default async (req, res, options, done) => {
     events,
     callbacks,
     csrfToken,
-    redirect
+    redirect,
+    defaultLocale,
+    locale
   } = options
   const provider = providers[providerName]
   const { type } = provider
@@ -110,6 +112,9 @@ export default async (req, res, options, done) => {
           // e.g. option to send users to a new account landing page on initial login
           // Note that the callback URL is preserved, so the journey can still be resumed
           if (isNewUser && pages.newUser) {
+            if (locale && locale !== defaultLocale) {
+              return redirect(`/${locale}${pages.newUser}`)
+            }
             return redirect(pages.newUser)
           }
 
@@ -200,6 +205,9 @@ export default async (req, res, options, done) => {
       // e.g. option to send users to a new account landing page on initial login
       // Note that the callback URL is preserved, so the journey can still be resumed
       if (isNewUser && pages.newUser) {
+        if (locale && locale !== defaultLocale) {
+          return redirect(`/${locale}${pages.newUser}`)
+        }
         return redirect(pages.newUser)
       }
 

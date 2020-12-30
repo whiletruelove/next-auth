@@ -28,6 +28,7 @@ interface InitOptions {
   events?: Events;
   useSecureCookies?: boolean;
   cookies?: Cookies;
+  defaultLocale?: string;
 }
 
 interface AppOptions {
