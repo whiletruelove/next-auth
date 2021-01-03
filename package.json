@@ -1,6 +1,6 @@
 {
   "name": "@whiletruelove/next-auth",
-  "version": "3.1.1-beta.5",
+  "version": "3.1.1-beta.6",
   "description": "Authentication for Next.js",
   "homepage": "https://next-auth.js.org",
   "repository": {

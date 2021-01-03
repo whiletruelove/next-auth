@@ -98,6 +98,7 @@ interface User {
   name?: string | null;
   email?: string | null;
   image?: string | null;
+  nickname?: string | null;
 }
 
 interface JWTOptions {
