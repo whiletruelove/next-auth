@@ -96,6 +96,15 @@ export default async (req, res, userSuppliedOptions) => {
           secure: useSecureCookies
         }
       },
+      bizAction: {
+        name: `${cookiePrefix}auth.biz-action`,
+        options: {
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 300000,
+          secure: useSecureCookies
+        }
+      },
       errorCallbackUrl: {
         name: `${cookiePrefix}auth.error-callback-url`,
         options: {
@@ -192,6 +201,10 @@ export default async (req, res, userSuppliedOptions) => {
       csrfToken = randomBytes(32).toString('hex')
       const newCsrfTokenCookie = `${csrfToken}|${createHash('sha256').update(`${csrfToken}${secret}`).digest('hex')}`
       cookie.set(res, cookies.csrfToken.name, newCsrfTokenCookie, cookies.csrfToken.options)
+    }
+
+    if (body.bizAction) {
+      cookie.set(res, cookies.bizAction.name, body.bizAction, cookies.bizAction.options)
     }
 
     // Helper method for handling redirects, this is passed to all routes

@@ -8,6 +8,7 @@ export default async (req, res, options, done) => {
   const useJwtSession = options.session.jwt
   const sessionMaxAge = options.session.maxAge
   const sessionToken = req.cookies[cookies.sessionToken.name]
+  const bizAction = req.cookies[cookies.bizAction.name]
 
   if (!sessionToken) {
     res.setHeader('Content-Type', 'application/json')
@@ -79,7 +80,10 @@ export default async (req, res, options, done) => {
         }
 
         // Pass Session through to the session callback
-        const sessionPayload = await callbacks.session(defaultSessionPayload, user)
+        const sessionPayload = await callbacks.session(defaultSessionPayload, user, {
+          bizAction,
+          callbackUrl: options.callbackUrl
+        })
 
         // Return session payload as response
         response = sessionPayload
