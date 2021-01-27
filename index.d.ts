@@ -112,8 +112,8 @@ interface JWTOptions {
 // TODO: Improve callback typings
 interface Callbacks {
   signIn?(user: User, account: GenericObject, profile: GenericObject): Promise<boolean>;
-  redirect?(url: string, baseUrl: string): Promise<string>;
-  session?(session: SessionBase, user: User): Promise<GenericObject>;
+  redirect?(url: string, baseUrl: string, locale: string): Promise<string>;
+  session?(session: SessionBase, user: User, options: GenericObject): Promise<GenericObject>;
   jwt?(
     token: GenericObject,
     user: User,
