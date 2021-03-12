@@ -1,4 +1,4 @@
-import cookie from '../lib/cookie'
+import * as cookie from '../lib/cookie'
 
 export default (req, res) => {
   const { body } = req

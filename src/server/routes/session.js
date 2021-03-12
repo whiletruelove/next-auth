@@ -83,7 +83,7 @@ export default async function session (req, res) {
         // Pass Session through to the session callback
         const sessionPayload = await callbacks.session(defaultSessionPayload, user, {
           bizAction,
-          callbackUrl: options.callbackUrl
+          callbackUrl: req.options.callbackUrl
         })
 
         // Return session payload as response

@@ -51,8 +51,8 @@ export default async function oAuthCallback (req) {
         // whiletrue.love: customize for wechat:oAuth2
         if (provider.id === 'wechat') {
           const urlObj = new URL(provider.profileUrl)
-          urlObj.searchParams.append('access_token', accessToken)
-          urlObj.searchParams.append('openid', results.openid)
+          urlObj.searchParams.append('access_token', tokens.accessToken)
+          urlObj.searchParams.append('openid', tokens.openid)
           provider.profileUrl = urlObj.href
         }
         // whiletrue.love.

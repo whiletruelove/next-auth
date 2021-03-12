@@ -1,4 +1,4 @@
-import cookie from '../lib/cookie'
+import * as cookie from '../lib/cookie'
 
 export default async (req, res) => {
   const { query, body } = req
