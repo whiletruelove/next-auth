@@ -22,17 +22,6 @@ export default async function callback (req, res) {
     jwt,
     events,
     callbacks,
-<<<<<<< HEAD
-    csrfToken,
-    redirect,
-    defaultLocale,
-    locale
-  } = options
-  const provider = providers[providerName]
-  const { type } = provider
-  const useJwtSession = options.session.jwt
-  const sessionMaxAge = options.session.maxAge
-=======
     session: {
       jwt: useJwtSession,
       maxAge: sessionMaxAge
@@ -40,7 +29,6 @@ export default async function callback (req, res) {
     defaultLocale,
     locale
   } = req.options
->>>>>>> dev
 
   // Get session ID (if set)
   const sessionToken = req.cookies?.[cookies.sessionToken.name] ?? null
@@ -120,16 +108,6 @@ export default async function callback (req, res) {
 
         await dispatchEvent(events.signIn, { user, account, isNewUser })
 
-<<<<<<< HEAD
-          // Handle first logins on new accounts
-          // e.g. option to send users to a new account landing page on initial login
-          // Note that the callback URL is preserved, so the journey can still be resumed
-          if (isNewUser && pages.newUser) {
-            if (locale && locale !== defaultLocale) {
-              return redirect(`/${locale}${pages.newUser}`)
-            }
-            return redirect(pages.newUser)
-=======
         // Handle first logins on new accounts
         // e.g. option to send users to a new account landing page on initial login
         // Note that the callback URL is preserved, so the journey can still be resumed
@@ -137,7 +115,6 @@ export default async function callback (req, res) {
           const _target = `${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`
           if (locale && locale !== defaultLocale) {
             return res.redirect(`/${locale}${_target}`)
->>>>>>> dev
           }
           return res.redirect(_target)
         }
@@ -235,18 +212,11 @@ export default async function callback (req, res) {
       // e.g. option to send users to a new account landing page on initial login
       // Note that the callback URL is preserved, so the journey can still be resumed
       if (isNewUser && pages.newUser) {
-<<<<<<< HEAD
-        if (locale && locale !== defaultLocale) {
-          return redirect(`/${locale}${pages.newUser}`)
-        }
-        return redirect(pages.newUser)
-=======
         const _target = `${pages.newUser}${pages.newUser.includes('?') ? '&' : '?'}callbackUrl=${encodeURIComponent(callbackUrl)}`
         if (locale && locale !== defaultLocale) {
           return res.redirect(`${locale}${_target}`)
         }
         return res.redirect(_target)
->>>>>>> dev
       }
 
       // Callback URL is already verified at this point, so safe to use if specified

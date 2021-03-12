@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import cookie from '../lib/cookie'
-
-export default async (req, res, options) => {
-  const { query, body } = req
-  const { baseUrl, callbacks, cookies, locale } = options
-=======
 import * as cookie from '../lib/cookie'
 
 export default async (req, res) => {
   const { query, body } = req
   const { baseUrl, callbacks, cookies, locale } = req.options
->>>>>>> dev
 
   let errorCallbackUrl = null
 
@@ -25,9 +17,5 @@ export default async (req, res) => {
 
   if (errorCallbackUrl && (errorCallbackUrl !== errorCallbackUrlUrlCookieValue)) { cookie.set(res, cookies.errorCallbackUrl.name, errorCallbackUrl, cookies.errorCallbackUrl.options) }
 
-<<<<<<< HEAD
-  return Promise.resolve(errorCallbackUrl)
-=======
   req.options.errorCallbackUrl = errorCallbackUrl
->>>>>>> dev
 }

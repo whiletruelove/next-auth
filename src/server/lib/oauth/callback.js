@@ -1,7 +1,6 @@
 import { decode as jwtDecode } from 'jsonwebtoken'
 import { URL } from 'url'
 import oAuthClient from './client'
-import { URL } from 'url'
 import logger from '../../../lib/logger'
 import { OAuthCallbackError } from '../../../lib/errors'
 
@@ -46,51 +45,6 @@ export default async function oAuthCallback (req) {
           throw new OAuthCallbackError('Missing JWT ID Token')
         }
 
-<<<<<<< HEAD
-        if (provider.idToken) {
-          // If we don't have an ID Token most likely the user hit a cancel
-          // button when signing in (or the provider is misconfigured).
-          //
-          // Unfortunately, we can't tell which, so we can't treat it as an
-          // error, so instead we just returning nothing, which will cause the
-          // user to be redirected back to the sign in page.
-          if (!results || !results.id_token) {
-            return callback()
-          }
-
-          // Support services that use OpenID ID Tokens to encode profile data
-          _decodeToken(
-            provider,
-            accessToken,
-            refreshToken,
-            results.id_token,
-            async (error, profileData) => {
-              const { profile, account, OAuthProfile } = await _getProfile(error, profileData, accessToken, refreshToken, provider, user)
-              callback(error, profile, account, OAuthProfile)
-            }
-          )
-        } else {
-          // Use custom get() method for oAuth2 flows
-          client.get = _get
-
-          // whiletrue.love: customize for wechat:oAuth2
-          if (provider.id === 'wechat') {
-            const urlObj = new URL(provider.profileUrl)
-            urlObj.searchParams.append('access_token', accessToken)
-            urlObj.searchParams.append('openid', results.openid)
-            provider.profileUrl = urlObj.href
-          }
-          // whiletrue.love.
-
-          client.get(
-            provider,
-            accessToken,
-            async (error, profileData) => {
-              const { profile, account, OAuthProfile } = await _getProfile(error, profileData, accessToken, refreshToken, provider)
-              callback(error, profile, account, OAuthProfile)
-            }
-          )
-=======
         // Support services that use OpenID ID Tokens to encode profile data
         profileData = jwtDecode(tokens.id_token, { json: true })
       } else {
@@ -100,7 +54,6 @@ export default async function oAuthCallback (req) {
           urlObj.searchParams.append('access_token', tokens.accessToken)
           urlObj.searchParams.append('openid', tokens.openid)
           provider.profileUrl = urlObj.href
->>>>>>> dev
         }
         // whiletrue.love.
         profileData = await client.get(provider, tokens.accessToken, tokens)
