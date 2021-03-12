@@ -1,63 +1,80 @@
-import { FC } from 'react';
-import { IncomingMessage } from 'http';
-import { GenericObject, SessionBase  } from './_utils';
+import { FC } from 'react'
+import { IncomingMessage } from 'http'
+import { GenericObject, SessionBase } from './_utils'
 
-type Session = SessionBase & GenericObject;
+type Session = SessionBase & GenericObject
 
 interface GetProvidersResponse {
-  [provider: string]: SessionProvider;
+  [provider: string]: SessionProvider
 }
 
 interface SessionProvider extends GenericObject {
-  id: string;
-  name: string;
-  type: string;
-  signinUrl: string;
-  callbackUrl: string;
+  id: string
+  name: string
+  type: string
+  signinUrl: string
+  callbackUrl: string
 }
 
 interface ContextProviderProps {
-  session: Session | null | undefined;
-  options?: SetOptionsParams;
+  session: Session | null | undefined
+  options?: SetOptionsParams
 }
 
 interface SetOptionsParams {
-  baseUrl?: string;
-  basePath?: string;
-  clientMaxAge?: number;
-  keepAlive?: number;
+  baseUrl?: string
+  basePath?: string
+  clientMaxAge?: number
+  keepAlive?: number
 }
 
-type ContextProvider = FC<ContextProviderProps>;
+interface SignInResponse {
+  error: string | undefined
+  status: number
+  ok: boolean
+  url: string | null
+}
+
+type ContextProvider = FC<ContextProviderProps>
 
 interface NextContext {
-  req?: IncomingMessage;
-  ctx?: { req: IncomingMessage };
+  req?: IncomingMessage
+  ctx?: { req: IncomingMessage }
 }
 
-declare function useSession(): [Session | null | undefined, boolean];
-declare function providers(): Promise<GetProvidersResponse | null>;
-declare const getProviders: typeof providers;
-declare function session(
+declare function useSession (): [Session | null | undefined, boolean]
+declare function providers (): Promise<GetProvidersResponse | null>
+declare const getProviders: typeof providers
+declare function session (
   context?: NextContext & {
-    triggerEvent?: boolean;
+    triggerEvent?: boolean
   },
-): Promise<Session | null>;
-declare const getSession: typeof session;
-declare function csrfToken(context?: NextContext): Promise<string | null>;
-declare const getCsrfToken: typeof csrfToken;
-declare function signin(
+): Promise<Session | null>
+declare const getSession: typeof session
+declare function csrfToken (context?: NextContext): Promise<string | null>
+declare const getCsrfToken: typeof csrfToken
+declare function signin (
+  provider: 'credentials' | 'email',
+  data?: GenericObject & {
+    callbackUrl?: string
+    redirect?: false
+  },
+  authorizationParams?: string | string[][] | GenericObject | URLSearchParams
+): Promise<SignInResponse>
+declare function signin (
   provider?: string,
   data?: GenericObject & {
-    callbackUrl?: string;
+    callbackUrl?: string
+    redirect?: boolean
   },
-): Promise<void>;
-declare const signIn: typeof signin;
-declare function signout(data?: { callbackUrl?: string }): Promise<void>;
-declare const signOut: typeof signout;
-declare function options(options: SetOptionsParams): void;
-declare const setOptions: typeof options;
-declare const Provider: ContextProvider;
+  authorizationParams?: string | string[][] | GenericObject | URLSearchParams
+): Promise<void>
+declare const signIn: typeof signin
+declare function signout (data?: { callbackUrl?: string, redirect?: boolean }): Promise<void>
+declare const signOut: typeof signout
+declare function options (options: SetOptionsParams): void
+declare const setOptions: typeof options
+declare const Provider: ContextProvider
 
 export {
   useSession,
@@ -75,5 +92,5 @@ export {
   setOptions,
   Provider,
   Session,
-  SessionProvider,
-};
+  SessionProvider
+}

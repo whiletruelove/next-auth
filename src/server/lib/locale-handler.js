@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import cookie from '../lib/cookie'
 
 export default (req, res, options) => {
   const { query, body } = req
   const { cookies, defaultLocale } = options
+=======
+import * as cookie from '../lib/cookie'
+
+export default (req, res) => {
+  const { query, body } = req
+  const { cookies, defaultLocale } = req.options
+>>>>>>> dev
 
   let locale = defaultLocale
 
@@ -17,5 +25,9 @@ export default (req, res, options) => {
 
   if (locale && (locale !== localeCookieValue)) { cookie.set(res, cookies.locale.name, locale, cookies.locale.options) }
 
+<<<<<<< HEAD
   return locale
+=======
+  req.options.locale = locale
+>>>>>>> dev
 }
